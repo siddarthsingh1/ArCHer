@@ -48,6 +48,8 @@ def batch_interact_environment(agent, tokenizer, env, num_trajectories,\
     """
     bsize = env.bsize
     all_trajectories = []
+    #print(num_trajectories//bsize)
+    #exit()
     for num_t in tqdm(range(num_trajectories//bsize), disable = not use_tqdm):
         done = False
         trajectories = [[] for _ in range(bsize)]
@@ -58,7 +60,10 @@ def batch_interact_environment(agent, tokenizer, env, num_trajectories,\
         while not all(batch_done):
             steps += 1
             # print(f"Environment stpes {str(steps)}")
+            print(batch_obs)
             action = agent.get_action(batch_obs)
+            print(action)
+            exit()
             batch_return = env.step(decode_f(action))
             for i,result in zip(range(bsize), batch_return):
                 if result is None:

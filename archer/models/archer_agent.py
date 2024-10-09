@@ -7,7 +7,7 @@ import torch.nn as nn
 import numpy as np
 from archer.models.critic import DoubleCritic
 
-
+#TODO: LOAD OUT MODEL HERE
 class ArcherAgent(torch.nn.Module):
     def __init__(self, device, accelerator, policy_lm = "gpt2", critic_lm = "roberta-base", 
                 cache_dir = '~/.cache', dropout = 0.5, TEMPLATE = None, use_lora=False,
@@ -17,7 +17,7 @@ class ArcherAgent(torch.nn.Module):
             self.model = AutoModelForCausalLM.from_pretrained(policy_lm, cache_dir=cache_dir,
                                                               torch_dtype = torch.bfloat16).to(device)
         else:
-            self.model = AutoModelForCausalLM.from_pretrained(policy_lm, cache_dir=cache_dir).to(device)
+            self.model = AutoModelForCausalLM.from_pretrained(policy_lm).to(device)
         if use_lora:
             from peft import LoraConfig, TaskType, get_peft_model
             lora_config = LoraConfig(
@@ -33,9 +33,11 @@ class ArcherAgent(torch.nn.Module):
         self.template = TEMPLATE
         self.policy_lm = policy_lm
         self.critic = DoubleCritic(device, accelerator, critic_lm = critic_lm, cache_dir = cache_dir, in_dim = 768, out_dim = 1)  
+        #self.critic = DoubleCritic(device, accelerator, critic_lm = critic_lm, in_dim = 768, out_dim = 1) 
         self.target_critic = DoubleCritic(device, accelerator, critic_lm = critic_lm, cache_dir = cache_dir, in_dim = 768, out_dim = 1) 
         self.soft_update_target_critic(1)
-        self.tokenizer = AutoTokenizer.from_pretrained(policy_lm, trust_remote_code=True, cache_dir=cache_dir)
+        #self.tokenizer = AutoTokenizer.from_pretrained(policy_lm, trust_remote_code=True, cache_dir=cache_dir)
+        self.tokenizer = AutoTokenizer.from_pretrained(policy_lm, trust_remote_code=True)
         self.tokenizer.truncation_side = 'left'
         self.tokenizer.pad_token = self.tokenizer.eos_token
         self.tokenizer.pad_token_id = self.tokenizer.eos_token_id

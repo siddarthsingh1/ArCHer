@@ -70,9 +70,9 @@ def offpolicy_train_loop(env,\
             trainer.load(os.path.join(save_path, 'trainer.pt'))
             all_trajectories = torch.load(os.path.join(save_path, 'trajectories.pt'))
             replay_buffer = torch.load(os.path.join(save_path, 'replay_buffer.pt'))
-        else:
-            print("Creating new checkpoint directory")
-            os.makedirs(save_path, exist_ok=True)
+        #else:
+        #    print("Creating new checkpoint directory")
+        #    os.makedirs(save_path, exist_ok=True)
     agent.prepare()
     #main training loop
     print(">>>start iterations")
@@ -86,6 +86,8 @@ def offpolicy_train_loop(env,\
                                             env_idx = env_idx,
                                             use_tqdm=False,
                                             decode_f = decode_f)
+            print(trajectories)
+            exit()
             info = {"rollout.mean": np.mean([d[0]["trajectory_reward"] for d in trajectories]),\
                     "rollout.max": np.max([d[0]["trajectory_reward"] for d in trajectories]),\
                     "rollout.min": np.min([d[0]["trajectory_reward"] for d in trajectories])}

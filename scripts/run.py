@@ -2,7 +2,7 @@ import torch
 import transformers
 from tqdm import tqdm
 from archer.environment import TwentyQuestionsEnv, BatchedTwentyQuestionsEnv,\
-    BatchedAdventureEnv, BatchedGuessMyCityEnv, BatchedWebShopEnv
+    BatchedAdventureEnv, BatchedGuessMyCityEnv, BatchedWebShopEnv,BatchedDebuggingGameEnv
 from archer.models import ArcherAgent, CHAIAgent
 from archer.algorithms import offpolicy_train_loop
 from archer.prompts import MISTRAL_TWENTY_QUESTIONS_TEMPLATE, mistral_twenty_questions_decode_actions
@@ -51,6 +51,10 @@ def main(config: "DictConfig"):
         env = BatchedWebShopEnv(lower=config.webshop_lower,
                                 upper=config.webshop_upper,
                                 env_load_path=config.env_load_path)
+    elif config.env_name == "debugging_env":
+        env = BatchedDebuggingGameEnv(env_load_path=config.env_load_path, 
+                                        device=device, 
+                                        cache_dir=config.cache_dir)
         eval_env = env
     else:
         raise NotImplementedError("Environment not implemented.")
