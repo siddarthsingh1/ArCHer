@@ -59,6 +59,8 @@ class ArcherAgent(torch.nn.Module):
     def get_action(self, observation):
         if self.template is not None:
             observation = [self.template.replace("{obs}", obs) for obs in observation]
+        #TODO: CLEANUP
+        #print(observation)
         obs_ids = self.tokenizer(observation, return_tensors='pt', padding=True, max_length=512, truncation = True).to(self.device)
         # obs_embeds = self.accelerator.unwrap_model(self.model).get_input_embeddings()(obs_ids["input_ids"])
         # print(inputs_embeds.shape)
@@ -69,8 +71,11 @@ class ArcherAgent(torch.nn.Module):
         outputs = self.accelerator.unwrap_model(self.model).generate(**obs_ids,\
                                     max_new_tokens=self.max_new_tokens, do_sample=self.do_sample, temperature = self.temperature,\
                                     pad_token_id = self.tokenizer.eos_token_id).cpu()
+        #Remove the mistral prompt setup
         outputs = outputs[:, context_len:]
         raw_action = self.tokenizer.batch_decode(outputs, skip_special_tokens  = True)
+        #print(raw_action)
+        #exit()
         for _ in range(3):
             raw_action = [a[1:] if a.startswith('\n') else a for a in raw_action]
         # return raw_action

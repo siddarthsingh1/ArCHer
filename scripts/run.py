@@ -5,7 +5,7 @@ from archer.environment import TwentyQuestionsEnv, BatchedTwentyQuestionsEnv,\
     BatchedAdventureEnv, BatchedGuessMyCityEnv, BatchedWebShopEnv,BatchedDebuggingGameEnv
 from archer.models import ArcherAgent, CHAIAgent
 from archer.algorithms import offpolicy_train_loop
-from archer.prompts import MISTRAL_TWENTY_QUESTIONS_TEMPLATE, mistral_twenty_questions_decode_actions
+from archer.prompts import MISTRAL_TWENTY_QUESTIONS_TEMPLATE, mistral_twenty_questions_decode_actions, mistral_debug_decode_actions, MISTRAL_DEBUG_TEMPLATE
 from archer.utils import colorful_print
 import torch.nn as nn
 import numpy as np 
@@ -83,9 +83,9 @@ def main(config: "DictConfig"):
                             temperature=config.temperature, do_sample=config.do_sample, 
                             policy_lm=config.policy_lm, critic_lm=config.critic_lm,
                             cache_dir=config.cache_dir, max_new_tokens=config.max_new_tokens,
-                            TEMPLATE=MISTRAL_TWENTY_QUESTIONS_TEMPLATE, use_lora=config.use_lora,
+                            TEMPLATE=MISTRAL_DEBUG_TEMPLATE, use_lora=config.use_lora,
                             eos_str=config.eos_str)
-        decode_f = mistral_twenty_questions_decode_actions
+        decode_f = mistral_debug_decode_actions#mistral_twenty_questions_decode_actions
     elif config.agent_type.lower() == "online_filteredbc":
         print(">>> Using Online FilteredBC agent")
         # the agent is the same as ArCHer, only the trainer will be different

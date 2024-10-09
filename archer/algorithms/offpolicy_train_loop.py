@@ -84,10 +84,10 @@ def offpolicy_train_loop(env,\
                                             env = env,\
                                             num_trajectories= rollout_size,\
                                             env_idx = env_idx,
-                                            use_tqdm=False,
+                                            use_tqdm=True,
                                             decode_f = decode_f)
-            print(trajectories)
-            exit()
+            #print(trajectories)
+            #exit()
             info = {"rollout.mean": np.mean([d[0]["trajectory_reward"] for d in trajectories]),\
                     "rollout.max": np.max([d[0]["trajectory_reward"] for d in trajectories]),\
                     "rollout.min": np.min([d[0]["trajectory_reward"] for d in trajectories])}

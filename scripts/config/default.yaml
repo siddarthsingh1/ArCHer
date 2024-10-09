@@ -1,8 +1,8 @@
 #cache directory of transformer
-cache_dir: '/home/yifei/.cache'
+cache_dir: '/home/sid/.cache'
 
 #token
-huggingface_token: ''
+huggingface_token: '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'
 wandb_key: ""
 
 

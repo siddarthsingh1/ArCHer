@@ -174,6 +174,7 @@ accelerate launch --config_file accelerate_config/default_config.yaml run.py --c
 ```bash
 cd scripts
 python run.py --config-name archer_llm_20q
+python run.py --config-name archer_debug
 ```
 
 ## Citing ArCHer

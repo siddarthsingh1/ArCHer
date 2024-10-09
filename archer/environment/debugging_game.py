@@ -168,8 +168,8 @@ class BatchedDebuggingGameEnv:
         env_load_path: str,
         cache_dir: str,
         device: torch.device,
-        max_conversation_length: int = 10,
-        bsize: int = 4,
+        max_conversation_length: int = 20,
+        bsize: int = 1,
         scenarios: Optional[Dict] = None,
     ):
         self.env_list = [DebuggingGameEnv(max_conversation_length, scenarios) for _ in range(bsize)]
